@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/constants/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
@@ -13,6 +14,15 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultDeco = BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(6.0),
+    );
+    final defaultTextStyle = TextStyle(
+      color: Colors.grey[800],
+      fontWeight: FontWeight.w600,
+    );
+
     return TableCalendar(
       selectedDayPredicate: (date) {
         if (selectedDay == null) {
@@ -32,6 +42,21 @@ class _CalendarState extends State<Calendar> {
         formatButtonVisible: false,
         titleCentered: true,
         titleTextStyle: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
+      ),
+      calendarStyle: CalendarStyle(
+        isTodayHighlighted: false,
+        defaultDecoration: defaultDeco,
+        holidayDecoration: defaultDeco,
+        weekendDecoration: defaultDeco,
+        selectedDecoration: defaultDeco.copyWith(
+          color: Colors.white,
+          border: Border.all(width: 1.0, color: primary_color),
+        ),
+        defaultTextStyle: defaultTextStyle,
+        weekendTextStyle: defaultTextStyle,
+        selectedTextStyle: defaultTextStyle.copyWith(
+          color: primary_color,
+        )
       ),
       onDaySelected: (selected, focused) {
         setState(() {
