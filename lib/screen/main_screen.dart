@@ -38,14 +38,19 @@ class _MainScreenState extends State<MainScreen> {
                 selectedDay: selectedDay,
               ),
               SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: ScheduleCard(
-                    startTime: 8,
-                    endTime: 9,
-                    content: '프로그래밍 공부하기',
-                    color: Colors.red),
-              )
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (_, __) {
+                          return ScheduleCard(
+                              startTime: 8,
+                              endTime: 9,
+                              content: '프로그래밍 공부하기 $__',
+                              color: Colors.red);
+                        })),
+              ),
             ],
           ),
         ),
