@@ -40,14 +40,15 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(height: 8),
               Expanded(
                 child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (_, __) {
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    child: ListView.separated(
+                        separatorBuilder: (context, index)=>SizedBox(height: 8),
+                        itemCount: 190,
+                        itemBuilder: (context, index) {
                           return ScheduleCard(
                               startTime: 8,
                               endTime: 9,
-                              content: '프로그래밍 공부하기 $__',
+                              content: '프로그래밍 공부하기 $index',
                               color: Colors.red);
                         })),
               ),
