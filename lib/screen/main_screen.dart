@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/component/calendar.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -6,9 +7,17 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'NotoSans'),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          body: Container()),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Calendar(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
