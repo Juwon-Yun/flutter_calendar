@@ -10,24 +10,32 @@ class ScheduleBottomSheet extends StatelessWidget {
     // 기기의 소프트웨어가 차지하는 부분
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-    return Container(
-      color: Colors.white,
-      height: MediaQuery.of(context).size.height * 0.5 + bottomInset,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomInset),
-        child: Padding(
-          padding: EdgeInsets.only(left: 8, right: 8, top: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _Time(),
-              SizedBox(height: 16),
-              _Content(),
-              SizedBox(height: 16),
-              _ColorPicker(),
-              SizedBox(height: 8),
-              _SaveButton(),
-            ],
+    return GestureDetector(
+      onTap: () {
+        // TextField를 제외하고 어딜 누르든 키보드가 사라짐, UX
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: SafeArea(
+        child: Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height * 0.5 + bottomInset,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: bottomInset),
+            child: Padding(
+              padding: EdgeInsets.only(left: 8, right: 8, top: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _Time(),
+                  SizedBox(height: 16),
+                  _Content(),
+                  SizedBox(height: 16),
+                  _ColorPicker(),
+                  SizedBox(height: 8),
+                  _SaveButton(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -46,13 +54,13 @@ class _SaveButton extends StatelessWidget {
       children: [
         Expanded(
             child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('저장'),
-            style: ElevatedButton.styleFrom(
-              primary: primary_color,
-            ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('저장'),
+          style: ElevatedButton.styleFrom(
+            primary: primary_color,
+          ),
         ))
       ],
     );
@@ -100,8 +108,11 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextField(
-      label: '내용',
+    return Expanded(
+      child: CustomTextField(
+        isTime: false,
+        label: '내용',
+      ),
     );
   }
 }
@@ -117,12 +128,13 @@ class _Time extends StatelessWidget {
       children: [
         Expanded(
             child: CustomTextField(
+          isTime: true,
           label: '시작 시간',
         )),
         SizedBox(
           width: 16,
         ),
-        Expanded(child: CustomTextField(label: '마감 시간')),
+        Expanded(child: CustomTextField(isTime: true, label: '마감 시간')),
       ],
     );
   }
