@@ -19,10 +19,13 @@ dependencies:
   intl: ^0.17.0
 
   # use for drift
-  drift: ^1.7.0
+#  drift: ^1.7.0
+#  sqlite3_flutter_libs: ^0.5.0
+#  path_provider: ^2.0.0
+  #
+  drift: ^1.4.0
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
-  #
 
 # 출시할떄는 필요없고 개발할떄만 필요한것들
 dev_dependencies:
@@ -32,7 +35,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
   # use for drift
-  drift_dev: ^1.7.0
+  drift_dev: ^1.4.0
   build_runner: ^2.1.11
   #
 

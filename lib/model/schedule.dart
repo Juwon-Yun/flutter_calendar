@@ -1,9 +1,9 @@
 // drift가 sqlite orm한다.
 import 'package:drift/drift.dart';
 
-class Schedules extends Table{
+class Schedules extends Table {
   // pk
-  IntColumn get id => integer()();
+  IntColumn get id => integer().autoIncrement()();
 
   TextColumn get content => text()();
 
@@ -16,5 +16,7 @@ class Schedules extends Table{
   // Category Color Table Id, fk
   IntColumn get colorId => integer()();
 
-  DateTimeColumn get createdAt => dateTime()();
+  // defualt setting dateTime.now
+  DateTimeColumn get createdAt =>
+      dateTime().clientDefault(() => DateTime.now())();
 }
