@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/components/custom_text_field.dart';
 import 'package:flutter_calendar/constants/colors.dart';
@@ -5,7 +6,10 @@ import 'package:flutter_calendar/repository/init_db.dart';
 import 'package:get_it/get_it.dart';
 
 class ScheduleBottomSheet extends StatefulWidget {
-  const ScheduleBottomSheet({Key? key}) : super(key: key);
+  final DateTime selectedDate;
+
+  const ScheduleBottomSheet({Key? key, required this.selectedDate})
+      : super(key: key);
 
   @override
   State<ScheduleBottomSheet> createState() => _ScheduleBottomSheetState();
@@ -36,13 +40,13 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
           child: Padding(
             padding: EdgeInsets.only(bottom: bottomInset),
             child: Padding(
-              padding: EdgeInsets.only(left: 8, right: 8, top: 16),
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
               // textformfield를 위해 감싸는 위젯
               child: Form(
                 // form의 컨트롤러
                 key: formKey,
                 // onChange처럼 Live로 작동함
-                autovalidateMode: AutovalidateMode.always,
+                // autovalidateMode: AutovalidateMode.always,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -95,19 +99,25 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     );
   }
 
-  void onSavePressed() {
+  void onSavePressed() async {
     // formKey를 생성을 했지만 form위젯과 결합을 안했을때 null이 될 수 있다.
     if (formKey.currentState == null) return;
 
     // 모든 TextFormField의 validate 옵션이 작동한다.
     // 모두 에러가 없을때 true를 리턴한다.
     if (formKey.currentState!.validate()) {
-      print('에러가 없습니다.');
       // synchronalble 이라서 await안써도됨
       formKey.currentState!.save();
-      print(startTime);
-      print(endTime);
-      print(content);
+
+      await GetIt.I<LocalDataBase>().createSchedule(SchedulesCompanion(
+        content: Value(content!),
+        date: Value(widget.selectedDate),
+        startTime: Value(startTime!),
+        endTime: Value(endTime!),
+        colorId: Value(selectedColorId!),
+      ));
+
+      Navigator.of(context).pop();
     } else {
       print('에러가 있습니다.');
     }

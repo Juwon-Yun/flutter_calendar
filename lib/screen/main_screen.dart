@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
               // 디폴트가 화면의 절반만큼만 사용하는 걸 풀어줌
               isScrollControlled: true,
               builder: (_) {
-                return ScheduleBottomSheet();
+                return ScheduleBottomSheet(selectedDate: selectedDay,);
               });
         },
         backgroundColor: primary_color,
