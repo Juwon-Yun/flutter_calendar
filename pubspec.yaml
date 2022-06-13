@@ -27,6 +27,9 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
 
+  # use for statement
+  get_it: ^7.2.0
+
 # 출시할떄는 필요없고 개발할떄만 필요한것들
 dev_dependencies:
   flutter_test:

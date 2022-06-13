@@ -54,7 +54,7 @@ class _Time extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = const TextStyle(
+    const textStyle = TextStyle(
         fontWeight: FontWeight.w600, color: primary_color, fontSize: 16);
 
     return Column(

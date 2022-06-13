@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar/constants/colors.dart';
 import 'package:flutter_calendar/repository/init_db.dart';
 import 'package:flutter_calendar/screen/main_screen.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
@@ -20,6 +21,9 @@ void main() {
 initController() async {
   await initializeDateFormatting();
   final database = LocalDataBase();
+
+  GetIt.I.registerSingleton<LocalDataBase>(database);
+
   final colors = await database.getCategoryColors();
 
   if (colors.isEmpty) {
@@ -36,5 +40,5 @@ initController() async {
   // CategoryColor(id: 5, hexCode: 2196F3),
   // CategoryColor(id: 6, hexCode: 3F51B5),
   // CategoryColor(id: 7, hexCode: 9C27B0)]
-  print(await database.getCategoryColors());
+  // print(await database.getCategoryColors());
 }
