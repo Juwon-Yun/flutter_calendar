@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// flutter pub run build_runner build
 // private는 불러오지 못함
 import 'package:drift/drift.dart';
 
@@ -23,25 +24,30 @@ part 'init_db.g.dart';
     CategoryColors,
   ],
 )
-class LocalDataBase extends _$LocalDataBase{
+class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
+
+  Future<int> createSchedule(SchedulesCompanion data) =>
+      into(schedules).insert(data);
+
+  Future<int> createCategoryColor(CategoryColorsCompanion data) =>
+      into(categoryColors).insert(data);
+
+  // select => stream or future
+  Future<List<CategoryColor>> getCategoryColors() => select(categoryColors).get();
+
+  @override
+  // table state version
+  int get schemaVersion => 1;
 }
-//
-// LazyDatabase _openConnection(){
-//   // db file 생성 위치
-//   return LazyDatabase(() async {
-//     final dbFolder = await getApplicationDocumentsDirectory();
-//     // dbFolder의 경로 주소와 db.sqlite를 붙여준다.
-//     final file = File(p.join(dbFolder.path, 'db.sqlite'));
-//
-//     return NativeDatabase(file);
-//   });
-// }
 
 LazyDatabase _openConnection() {
+  // db file 생성 위치
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
+    // dbFolder의 경로 주소와 db.sqlite를 붙여준다.
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
+
     return NativeDatabase(file);
   });
 }
