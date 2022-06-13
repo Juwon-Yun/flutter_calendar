@@ -34,15 +34,17 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
               child: Form(
                 // form의 컨트롤러
                 key: formKey,
+                // onChange처럼 Live로 작동함
+                autovalidateMode: AutovalidateMode.always,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _Time(),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     _Content(),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     _ColorPicker(),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     _SaveButton(onPressed: onSavePressed),
                   ],
                 ),
@@ -60,7 +62,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
     // 모든 TextFormField의 validate 옵션이 작동한다.
     // 모두 에러가 없을때 true를 리턴한다.
     if(formKey.currentState!.validate()){
-      print('에러가 있습니다.');
+      print('에러가 없습니다.');
     }else{
       print('에러가 있습니다.');
     }

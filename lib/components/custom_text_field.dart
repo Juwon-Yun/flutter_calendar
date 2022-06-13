@@ -33,8 +33,26 @@ class CustomTextField extends StatelessWidget {
           // 에러가 있으면 에러를 문자열로 반환한다.
 
           if (value == null || value.isEmpty) {
-            return '값을 입력해주세요';
+            return '값을 입력해주세요.';
           }
+          
+          if(isTime){
+            int time = int.parse(value);
+
+            if(time < 0){
+              return '0 이상의 숫자를 입력해주세요.';
+            }
+
+            if(time > 24){
+              return '24 이하의 숫자를 입력해주세요.';
+            }
+
+          }else{
+            // if(value.length > 500){
+            //   return '500자 이하의 글자를 입력해주세요.';
+            // }
+          }
+          
           return null;
         },
 
@@ -43,10 +61,11 @@ class CustomTextField extends StatelessWidget {
         maxLines: isTime ? 1 : null,
         // 세로로 최대한으로 늘린다.
         expands: !isTime,
+        maxLength: isTime ? null : 500,
         keyboardType: isTime ? TextInputType.number : TextInputType.multiline,
         inputFormatters: isTime
             ? [
-                // 숫자만 타이밍 가능하게
+                // 숫자만 타이핑 가능하게
                 FilteringTextInputFormatter.digitsOnly
               ]
             : [],
