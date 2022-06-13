@@ -88,7 +88,9 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                           );
                         }),
                     const SizedBox(height: 8),
-                    _SaveButton(onPressed: onSavePressed),
+                    _SaveButton(
+                      onPressed: onSavePressed,
+                    )
                   ],
                 ),
               ),
@@ -117,6 +119,9 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
         colorId: Value(selectedColorId!),
       ));
 
+      print('에러가 없없습니다.');
+
+      if(!mounted) return;
       Navigator.of(context).pop();
     } else {
       print('에러가 있습니다.');
@@ -128,10 +133,8 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
   void onFormFieldSaved(val) {
     if (int.tryParse(val) != null) {
       endTime = int.parse(val);
-      print('onFormField int $val');
     } else {
       content = val;
-      print('onFormField text $val');
     }
   }
 }
