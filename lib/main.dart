@@ -23,10 +23,10 @@ initController() async {
   final colors = await database.getCategoryColors();
 
   if (colors.isEmpty) {
-    for (String hexcode in default_colors) {
+    for (String hexCode in default_colors) {
       await database.createCategoryColor(
           // CategoryColorsCompanion(id: , hexCode: );
-          CategoryColorsCompanion(hexCode: Value(hexcode)));
+          CategoryColorsCompanion(hexCode: Value(hexCode)));
     }
   }
   // [CategoryColor(id: 1, hexCode: F44336),

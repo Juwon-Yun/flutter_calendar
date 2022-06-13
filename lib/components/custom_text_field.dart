@@ -4,7 +4,6 @@ import 'package:flutter_calendar/constants/colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
-
   final bool isTime;
 
   const CustomTextField({Key? key, required this.label, required this.isTime})
@@ -24,7 +23,21 @@ class CustomTextField extends StatelessWidget {
     );
   }
 
-  Widget renderTextField() => TextField(
+  Widget renderTextField() => TextFormField(
+        // onChanged: (String? inputValue){
+          // print(inputValue);
+        // },
+        // form으로 input value를 통합해서 관리한다.
+        validator: (String? value){
+          // null이 반환되면 에러가 없다.
+          // 에러가 있으면 에러를 문자열로 반환한다.
+
+          if (value == null || value.isEmpty) {
+            return '값을 입력해주세요';
+          }
+          return null;
+        },
+
         // 1인 경우 1줄로, null인 경우 너비 넘어가면 줄바꿈
         // maxLines: 1,
         maxLines: isTime ? 1 : null,

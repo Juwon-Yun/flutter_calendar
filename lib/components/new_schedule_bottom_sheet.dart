@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar/components/custom_text_field.dart';
 import 'package:flutter_calendar/constants/colors.dart';
 
-class ScheduleBottomSheet extends StatelessWidget {
-  const ScheduleBottomSheet({Key? key}) : super(key: key);
+class ScheduleBottomSheet extends StatefulWidget {
+ const ScheduleBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  State<ScheduleBottomSheet> createState() => _ScheduleBottomSheetState();
+}
+
+class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
+  final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +30,22 @@ class ScheduleBottomSheet extends StatelessWidget {
             padding: EdgeInsets.only(bottom: bottomInset),
             child: Padding(
               padding: EdgeInsets.only(left: 8, right: 8, top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _Time(),
-                  SizedBox(height: 16),
-                  _Content(),
-                  SizedBox(height: 16),
-                  _ColorPicker(),
-                  SizedBox(height: 8),
-                  _SaveButton(),
-                ],
+              // textformfield를 위해 감싸는 위젯
+              child: Form(
+                // form의 컨트롤러
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _Time(),
+                    SizedBox(height: 16),
+                    _Content(),
+                    SizedBox(height: 16),
+                    _ColorPicker(),
+                    SizedBox(height: 8),
+                    _SaveButton(onPressed: onSavePressed),
+                  ],
+                ),
               ),
             ),
           ),
@@ -41,11 +53,25 @@ class ScheduleBottomSheet extends StatelessWidget {
       ),
     );
   }
+  void onSavePressed(){
+    // formKey를 생성을 했지만 form위젯과 결합을 안했을때 null이 될 수 있다.
+    if(formKey.currentState == null) return;
+
+    // 모든 TextFormField의 validate 옵션이 작동한다.
+    // 모두 에러가 없을때 true를 리턴한다.
+    if(formKey.currentState!.validate()){
+      print('에러가 있습니다.');
+    }else{
+      print('에러가 있습니다.');
+    }
+  }
 }
 
 class _SaveButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
   const _SaveButton({
-    Key? key,
+    Key? key, required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -54,9 +80,7 @@ class _SaveButton extends StatelessWidget {
       children: [
         Expanded(
             child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: onPressed,
           child: Text('저장'),
           style: ElevatedButton.styleFrom(
             primary: primary_color,
