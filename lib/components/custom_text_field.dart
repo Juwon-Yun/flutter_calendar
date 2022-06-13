@@ -5,8 +5,13 @@ import 'package:flutter_calendar/constants/colors.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final bool isTime;
+  final FormFieldSetter<String> onSaved;
 
-  const CustomTextField({Key? key, required this.label, required this.isTime})
+  const CustomTextField(
+      {Key? key,
+      required this.label,
+      required this.isTime,
+      required this.onSaved})
       : super(key: key);
 
   @override
@@ -24,35 +29,36 @@ class CustomTextField extends StatelessWidget {
   }
 
   Widget renderTextField() => TextFormField(
+        // TextFormField를 감싸고 있는 Form Widget에서 Save 함수를 호출했을때 onSaved가 실행됨
+        onSaved: onSaved,
         // onChanged: (String? inputValue){
-          // print(inputValue);
+        // print(inputValue);
         // },
         // form으로 input value를 통합해서 관리한다.
-        validator: (String? value){
+        validator: (String? value) {
           // null이 반환되면 에러가 없다.
           // 에러가 있으면 에러를 문자열로 반환한다.
 
           if (value == null || value.isEmpty) {
             return '값을 입력해주세요.';
           }
-          
-          if(isTime){
+
+          if (isTime) {
             int time = int.parse(value);
 
-            if(time < 0){
+            if (time < 0) {
               return '0 이상의 숫자를 입력해주세요.';
             }
 
-            if(time > 24){
+            if (time > 24) {
               return '24 이하의 숫자를 입력해주세요.';
             }
-
-          }else{
+          } else {
             // if(value.length > 500){
             //   return '500자 이하의 글자를 입력해주세요.';
             // }
           }
-          
+
           return null;
         },
 

@@ -3,7 +3,7 @@ import 'package:flutter_calendar/components/custom_text_field.dart';
 import 'package:flutter_calendar/constants/colors.dart';
 
 class ScheduleBottomSheet extends StatefulWidget {
- const ScheduleBottomSheet({Key? key}) : super(key: key);
+  const ScheduleBottomSheet({Key? key}) : super(key: key);
 
   @override
   State<ScheduleBottomSheet> createState() => _ScheduleBottomSheetState();
@@ -12,10 +12,17 @@ class ScheduleBottomSheet extends StatefulWidget {
 class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
   final GlobalKey<FormState> formKey = GlobalKey();
 
+  int? startTime;
+  int? endTime;
+  String? content;
+
   @override
   Widget build(BuildContext context) {
     // 기기의 소프트웨어가 차지하는 부분
-    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final bottomInset = MediaQuery
+        .of(context)
+        .viewInsets
+        .bottom;
 
     return GestureDetector(
       onTap: () {
@@ -25,7 +32,10 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       child: SafeArea(
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height * 0.5 + bottomInset,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.5 + bottomInset,
           child: Padding(
             padding: EdgeInsets.only(bottom: bottomInset),
             child: Padding(
@@ -39,9 +49,19 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _Time(),
+                    _Time(
+                      onStartSaved: (newValue) {
+                        // validator에서 이미 null 검증을 했기 때문에 null 체크하지 않아도된다.
+                        startTime = int.parse(newValue!);
+                      },
+                      onEndSaved: (String? newValue) =>
+                          onFormFieldSaved(newValue),
+                    ),
                     const SizedBox(height: 16),
-                    _Content(),
+                    _Content(
+                        onContentSaved: (String? newValue) =>
+                            onFormFieldSaved(newValue),
+                    ),
                     const SizedBox(height: 16),
                     _ColorPicker(),
                     const SizedBox(height: 8),
@@ -55,16 +75,34 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       ),
     );
   }
-  void onSavePressed(){
+
+  void onSavePressed() {
     // formKey를 생성을 했지만 form위젯과 결합을 안했을때 null이 될 수 있다.
-    if(formKey.currentState == null) return;
+    if (formKey.currentState == null) return;
 
     // 모든 TextFormField의 validate 옵션이 작동한다.
     // 모두 에러가 없을때 true를 리턴한다.
-    if(formKey.currentState!.validate()){
+    if (formKey.currentState!.validate()) {
       print('에러가 없습니다.');
-    }else{
+      // synchronalble 이라서 await안써도됨
+      formKey.currentState!.save();
+      print(startTime);
+      print(endTime);
+      print(content);
+    } else {
       print('에러가 있습니다.');
+    }
+  }
+  
+  // int와 string을 구분했지만 
+  // startTime과 endTime은 구분할 방법이 없을까?
+  void onFormFieldSaved(val) {
+    if (int.tryParse(val) != null) {
+      endTime = int.parse(val);
+      print('onFormField int $val');
+    } else {
+      content = val;
+      print('onFormField text $val');
     }
   }
 }
@@ -73,7 +111,8 @@ class _SaveButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _SaveButton({
-    Key? key, required this.onPressed,
+    Key? key,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -82,12 +121,12 @@ class _SaveButton extends StatelessWidget {
       children: [
         Expanded(
             child: ElevatedButton(
-          onPressed: onPressed,
-          child: Text('저장'),
-          style: ElevatedButton.styleFrom(
-            primary: primary_color,
-          ),
-        ))
+              onPressed: onPressed,
+              child: const Text('저장'),
+              style: ElevatedButton.styleFrom(
+                primary: primary_color,
+              ),
+            ))
       ],
     );
   }
@@ -117,7 +156,8 @@ class _ColorPicker extends StatelessWidget {
     );
   }
 
-  Widget renderColor(Color color) => Container(
+  Widget renderColor(Color color) =>
+      Container(
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
@@ -128,8 +168,11 @@ class _ColorPicker extends StatelessWidget {
 }
 
 class _Content extends StatelessWidget {
+  final FormFieldSetter<String> onContentSaved;
+
   const _Content({
     Key? key,
+    required this.onContentSaved,
   }) : super(key: key);
 
   @override
@@ -138,14 +181,20 @@ class _Content extends StatelessWidget {
       child: CustomTextField(
         isTime: false,
         label: '내용',
+        onSaved: onContentSaved,
       ),
     );
   }
 }
 
 class _Time extends StatelessWidget {
+  final FormFieldSetter<String> onStartSaved;
+  final FormFieldSetter<String> onEndSaved;
+
   const _Time({
     Key? key,
+    required this.onStartSaved,
+    required this.onEndSaved,
   }) : super(key: key);
 
   @override
@@ -154,13 +203,19 @@ class _Time extends StatelessWidget {
       children: [
         Expanded(
             child: CustomTextField(
-          isTime: true,
-          label: '시작 시간',
-        )),
+              isTime: true,
+              label: '시작 시간',
+              onSaved: onStartSaved,
+            )),
         SizedBox(
           width: 16,
         ),
-        Expanded(child: CustomTextField(isTime: true, label: '마감 시간')),
+        Expanded(
+            child: CustomTextField(
+              isTime: true,
+              label: '마감 시간',
+              onSaved: onEndSaved,
+            )),
       ],
     );
   }
