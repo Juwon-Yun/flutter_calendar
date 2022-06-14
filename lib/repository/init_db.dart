@@ -52,7 +52,12 @@ class LocalDataBase extends _$LocalDataBase {
     // 실제 테이블을 명시해주어야한다.
     // query.where((tbl) => tbl.date.equals(date));
     query.where(schedules.date.equals(date));
-
+    
+    query.orderBy([
+      // schedules의 시작시간을 기준으로 오름차순으로 정렬
+      OrderingTerm.asc(schedules.startTime)
+    ]);
+    
     // stream의 map임, rows => filter된 모든 데이터
     return query.watch().map(
           (rows) => rows.map(
