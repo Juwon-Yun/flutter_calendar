@@ -4,6 +4,8 @@ import 'package:flutter_calendar/components/new_schedule_bottom_sheet.dart';
 import 'package:flutter_calendar/components/schedule_card.dart';
 import 'package:flutter_calendar/components/today_banner.dart';
 import 'package:flutter_calendar/constants/colors.dart';
+import 'package:flutter_calendar/repository/init_db.dart';
+import 'package:get_it/get_it.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -79,16 +81,22 @@ class _ScheduleList extends StatelessWidget {
     return Expanded(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(height: 8),
-              itemCount: 190,
-              itemBuilder: (context, index) {
-                return ScheduleCard(
-                    startTime: 8,
-                    endTime: 9,
-                    content: '프로그래밍 공부하기 $index',
-                    color: Colors.red);
-              })),
+          child: StreamBuilder<List<Schedule>>(
+            stream: GetIt.I<LocalDataBase>().watchSchedules(),
+            builder: (context, snapshot) {
+              print('${snapshot.data} snapshot.data');
+              return ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(height: 8),
+                  itemCount: 190,
+                  itemBuilder: (context, index) {
+                    return ScheduleCard(
+                        startTime: 8,
+                        endTime: 9,
+                        content: '프로그래밍 공부하기 $index',
+                        color: Colors.red);
+                  });
+            }
+          )),
     );
   }
 }

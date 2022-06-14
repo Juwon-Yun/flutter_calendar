@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primary_color = Color(0xFF0DB2B2);
+const primary_color = Color(0xFF808080);
 
 const default_colors = [
   // 빨강

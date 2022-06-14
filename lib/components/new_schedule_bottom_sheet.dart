@@ -119,8 +119,6 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
         colorId: Value(selectedColorId!),
       ));
 
-      print('에러가 없없습니다.');
-
       if(!mounted) return;
       Navigator.of(context).pop();
     } else {
@@ -212,7 +210,7 @@ class _ColorPicker extends StatelessWidget {
           color: Color(int.parse('0xFF$color')),
           shape: BoxShape.circle,
           border:
-              isSelected ? Border.all(color: Colors.black, width: 4.0) : null,
+              isSelected ? Border.all(color: Colors.grey, width: 3.0) : null,
         ),
         width: 32,
         height: 32,

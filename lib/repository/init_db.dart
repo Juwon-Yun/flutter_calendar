@@ -36,6 +36,9 @@ class LocalDataBase extends _$LocalDataBase {
   // select => stream or future
   Future<List<CategoryColor>> getCategoryColors() => select(categoryColors).get();
 
+  // Stream으로 값들이 지속적으로 업데이트된 값을 받을 수 있다.
+  Stream<List<Schedule>> watchSchedules() => select(schedules).watch();
+
   @override
   // table state version
   int get schemaVersion => 1;
