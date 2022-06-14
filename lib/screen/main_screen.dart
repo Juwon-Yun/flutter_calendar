@@ -4,6 +4,7 @@ import 'package:flutter_calendar/components/new_schedule_bottom_sheet.dart';
 import 'package:flutter_calendar/components/schedule_card.dart';
 import 'package:flutter_calendar/components/today_banner.dart';
 import 'package:flutter_calendar/constants/colors.dart';
+import 'package:flutter_calendar/model/schedule_with_color.dart';
 import 'package:flutter_calendar/repository/init_db.dart';
 import 'package:get_it/get_it.dart';
 
@@ -91,7 +92,7 @@ class _ScheduleList extends StatelessWidget {
     return Expanded(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: StreamBuilder<List<Schedule>>(
+          child: StreamBuilder<List<ScheduleWithColor>>(
               stream: GetIt.I<LocalDataBase>().watchSchedules(selectedDay),
               builder: (context, snapshot) {
                 // 조건없이 모든 schedule을 가져오기때문에 비효율이다.
@@ -113,21 +114,26 @@ class _ScheduleList extends StatelessWidget {
                   return Center(child: CircularProgressIndicator());
                 }
 
-                if(snapshot.hasData && snapshot.data!.isEmpty){
+                if (snapshot.hasData && snapshot.data!.isEmpty) {
                   return Center(child: Text('일정이 없습니다.'));
                 }
 
                 return ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(height: 8),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 8),
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      final schedule = snapshot.data![index];
+                      final scheduleWithColor = snapshot.data![index];
 
                       return ScheduleCard(
-                          startTime: schedule.startTime,
-                          endTime: schedule.endTime,
-                          content: schedule.content,
-                          color: Colors.red);
+                          startTime: scheduleWithColor.schedule.startTime,
+                          endTime: scheduleWithColor.schedule.endTime,
+                          content: scheduleWithColor.schedule.content,
+                          color: Color(
+                            int.parse(
+                                'FF${scheduleWithColor.categoryColor.hexCode}',
+                                radix: 16),
+                          ));
                     });
               })),
     );

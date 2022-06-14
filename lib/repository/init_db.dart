@@ -10,6 +10,7 @@ import 'package:drift/native.dart';
 
 import 'package:flutter_calendar/model/category.dart';
 import 'package:flutter_calendar/model/schedule.dart';
+import 'package:flutter_calendar/model/schedule_with_color.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -40,18 +41,33 @@ class LocalDataBase extends _$LocalDataBase {
   // Stream으로 값들이 지속적으로 업데이트된 값을 받을 수 있다.
   // where은 void function이기떄문에
 
-  Stream<List<Schedule>> watchSchedules(DateTime date) {
-      // final query = select(schedules);
-      // query.where((tbl) => tbl.date.equals(date));
-      // return query.watch();
+  // Stream<List<Schedule>> watchSchedules(DateTime date) {
+  Stream<List<ScheduleWithColor>> watchSchedules(DateTime date) {
+    // inner join
+    final query = select(schedules).join([
+      // 조인할 테이블, 조인 조건
+      innerJoin(categoryColors, categoryColors.id.equalsExp(schedules.colorId))
+    ]);
 
-      // ..을 이용해 생성자 생략을 한다.
-      // 함수가 실행이된 대상이 리턴이 된다.
-      // 함수 결과가 리턴되는것이 아닌
-      return (select(schedules)..where((tbl) => tbl.date.equals(date))).watch();
+    // 실제 테이블을 명시해주어야한다.
+    // query.where((tbl) => tbl.date.equals(date));
+    query.where(schedules.date.equals(date));
+
+    // stream의 map임, rows => filter된 모든 데이터
+    return query.watch().map(
+          (rows) => rows.map(
+            (row) => ScheduleWithColor(
+              schedule: row.readTable(schedules),
+              categoryColor: row.readTable(categoryColors),
+            ),
+          ).toList(),
+        );
+
+    // ..을 이용해 생성자 생략을 한다.
+    // 함수가 실행이된 대상이 리턴이 된다.
+    // 함수 결과가 리턴되는것이 아닌
+    // return (select(schedules)..where((tbl) => tbl.date.equals(date))).watch();
   }
-
-
 
   @override
   // table state version
