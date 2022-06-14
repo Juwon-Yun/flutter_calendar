@@ -6,12 +6,14 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final bool isTime;
   final FormFieldSetter<String> onSaved;
+  final String initialValue;
 
   const CustomTextField(
       {Key? key,
       required this.label,
       required this.isTime,
-      required this.onSaved})
+      required this.onSaved,
+      required this.initialValue})
       : super(key: key);
 
   @override
@@ -21,7 +23,8 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(color: primary_color, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+              color: primary_color, fontWeight: FontWeight.w600),
         ),
         isTime ? renderTextField() : Expanded(child: renderTextField()),
       ],
@@ -84,5 +87,6 @@ class CustomTextField extends StatelessWidget {
           // 접미사 suffix, 접두사 preffix
           suffixText: isTime ? '시' : null,
         ),
+        initialValue: initialValue,
       );
 }

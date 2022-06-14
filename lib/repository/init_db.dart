@@ -46,6 +46,12 @@ class LocalDataBase extends _$LocalDataBase {
   Future<int> removeSchedule(int id) =>
       (delete(schedules)..where((tbl) => tbl.id.equals(id))).go();
 
+  Future<int> updateScheduleById(int id, SchedulesCompanion data) =>
+      (update(schedules)..where((tbl) => tbl.id.equals(id))).write(data);
+
+  Future<Schedule> getScheduleById(int id) =>
+      (select(schedules)..where((tbl) => tbl.id.equals(id))).getSingle();
+
   // Stream<List<Schedule>> watchSchedules(DateTime date) {
   Stream<List<ScheduleWithColor>> watchSchedules(DateTime date) {
     // inner join
