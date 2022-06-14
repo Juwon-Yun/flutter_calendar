@@ -92,34 +92,41 @@ class _ScheduleList extends StatelessWidget {
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: StreamBuilder<List<Schedule>>(
-              stream: GetIt.I<LocalDataBase>().watchSchedules(),
+              stream: GetIt.I<LocalDataBase>().watchSchedules(selectedDay),
               builder: (context, snapshot) {
-                print('------원래 데이터------');
-                print('${snapshot.data} snapshot.data');
-                print('------$selectedDay------');
+                // 조건없이 모든 schedule을 가져오기때문에 비효율이다.
+                // List<Schedule> schedules = [];
 
-                List<Schedule> schedules = [];
+                // if (snapshot.hasData) {
+                //   schedules = snapshot.data!
+                //       .where((element) => element.date.toUtc() == selectedDay)
+                //       .toList();
+                // }
 
-                if (snapshot.hasData) {
-                  schedules = snapshot.data!
-                      .where((element) => element.date == selectedDay)
-                      .toList();
-                }
                 // 오늘날짜로 돌아오면 스케쥴이 사라진다. 왜냐하면 기준 시간이 다르기 때문
                 // 2022-06-14 00:00:00.000Z <- Z는 UTC 기준으로 0시를 말한다.
                 // Z가 안붙어있으면 현지시간을 말한다 ( +- 9시간 )
-                print('------필터링------');
-                print('${schedules} schedules');
-                print('------$selectedDay------');
+
+                print(snapshot.data);
+
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if(snapshot.hasData && snapshot.data!.isEmpty){
+                  return Center(child: Text('일정이 없습니다.'));
+                }
 
                 return ListView.separated(
-                    separatorBuilder: (context, index) => SizedBox(height: 8),
-                    itemCount: 190,
+                    separatorBuilder: (context, index) => const SizedBox(height: 8),
+                    itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
+                      final schedule = snapshot.data![index];
+
                       return ScheduleCard(
-                          startTime: 8,
-                          endTime: 9,
-                          content: '프로그래밍 공부하기 $index',
+                          startTime: schedule.startTime,
+                          endTime: schedule.endTime,
+                          content: schedule.content,
                           color: Colors.red);
                     });
               })),

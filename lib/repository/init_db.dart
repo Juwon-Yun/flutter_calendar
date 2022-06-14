@@ -34,10 +34,24 @@ class LocalDataBase extends _$LocalDataBase {
       into(categoryColors).insert(data);
 
   // select => stream or future
-  Future<List<CategoryColor>> getCategoryColors() => select(categoryColors).get();
+  Future<List<CategoryColor>> getCategoryColors() =>
+      select(categoryColors).get();
 
   // Stream으로 값들이 지속적으로 업데이트된 값을 받을 수 있다.
-  Stream<List<Schedule>> watchSchedules() => select(schedules).watch();
+  // where은 void function이기떄문에
+
+  Stream<List<Schedule>> watchSchedules(DateTime date) {
+      // final query = select(schedules);
+      // query.where((tbl) => tbl.date.equals(date));
+      // return query.watch();
+
+      // ..을 이용해 생성자 생략을 한다.
+      // 함수가 실행이된 대상이 리턴이 된다.
+      // 함수 결과가 리턴되는것이 아닌
+      return (select(schedules)..where((tbl) => tbl.date.equals(date))).watch();
+  }
+
+
 
   @override
   // table state version
