@@ -41,7 +41,6 @@ class _MainScreenState extends State<MainScreen> {
               ),
               const SizedBox(height: 8),
               TodayBanner(
-                scheduleCount: 1,
                 selectedDay: selectedDay,
               ),
               SizedBox(height: 8),
