@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
               TodayBanner(
                 selectedDay: selectedDay,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               _ScheduleList(selectedDay: selectedDay),
             ],
           ),
@@ -90,7 +90,7 @@ class _ScheduleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: StreamBuilder<List<ScheduleWithColor>>(
               stream: GetIt.I<LocalDataBase>().watchSchedules(selectedDay),
               builder: (context, snapshot) {
@@ -110,11 +110,11 @@ class _ScheduleList extends StatelessWidget {
                 print(snapshot.data);
 
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasData && snapshot.data!.isEmpty) {
-                  return Center(child: Text('일정이 없습니다.'));
+                  return const Center(child: Text('일정이 없습니다.'));
                 }
 
                 return ListView.separated(
@@ -124,15 +124,26 @@ class _ScheduleList extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final scheduleWithColor = snapshot.data![index];
 
-                      return ScheduleCard(
-                          startTime: scheduleWithColor.schedule.startTime,
-                          endTime: scheduleWithColor.schedule.endTime,
-                          content: scheduleWithColor.schedule.content,
-                          color: Color(
-                            int.parse(
-                                'FF${scheduleWithColor.categoryColor.hexCode}',
-                                radix: 16),
-                          ));
+                      // swipe widget -> dismissible
+                      return Dismissible(
+                        key: ObjectKey(scheduleWithColor.schedule.id),
+                        // 오른쪽에서 왼쪽으로
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (DismissDirection direction){
+                          // dismiss된 방향을 알 수 있음.
+                          // print(direction);
+                          GetIt.I<LocalDataBase>().removeSchedule(scheduleWithColor.schedule.id);
+                        },
+                        child: ScheduleCard(
+                            startTime: scheduleWithColor.schedule.startTime,
+                            endTime: scheduleWithColor.schedule.endTime,
+                            content: scheduleWithColor.schedule.content,
+                            color: Color(
+                              int.parse(
+                                  'FF${scheduleWithColor.categoryColor.hexCode}',
+                                  radix: 16),
+                            )),
+                      );
                     });
               })),
     );

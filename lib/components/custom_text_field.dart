@@ -81,6 +81,8 @@ class CustomTextField extends StatelessWidget {
           border: InputBorder.none,
           filled: true,
           fillColor: Colors.grey[300],
+          // 접미사 suffix, 접두사 preffix
+          suffixText: isTime ? '시' : null,
         ),
       );
 }

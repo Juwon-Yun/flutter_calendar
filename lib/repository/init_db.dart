@@ -41,6 +41,11 @@ class LocalDataBase extends _$LocalDataBase {
   // Stream으로 값들이 지속적으로 업데이트된 값을 받을 수 있다.
   // where은 void function이기떄문에
 
+  // 모든값이 삭제되는 쿼리
+  // removeSchedule() => delete(schedules).go();
+  Future<int> removeSchedule(int id) =>
+      (delete(schedules)..where((tbl) => tbl.id.equals(id))).go();
+
   // Stream<List<Schedule>> watchSchedules(DateTime date) {
   Stream<List<ScheduleWithColor>> watchSchedules(DateTime date) {
     // inner join
@@ -52,20 +57,22 @@ class LocalDataBase extends _$LocalDataBase {
     // 실제 테이블을 명시해주어야한다.
     // query.where((tbl) => tbl.date.equals(date));
     query.where(schedules.date.equals(date));
-    
+
     query.orderBy([
       // schedules의 시작시간을 기준으로 오름차순으로 정렬
       OrderingTerm.asc(schedules.startTime)
     ]);
-    
+
     // stream의 map임, rows => filter된 모든 데이터
     return query.watch().map(
-          (rows) => rows.map(
-            (row) => ScheduleWithColor(
-              schedule: row.readTable(schedules),
-              categoryColor: row.readTable(categoryColors),
-            ),
-          ).toList(),
+          (rows) => rows
+              .map(
+                (row) => ScheduleWithColor(
+                  schedule: row.readTable(schedules),
+                  categoryColor: row.readTable(categoryColors),
+                ),
+              )
+              .toList(),
         );
 
     // ..을 이용해 생성자 생략을 한다.
