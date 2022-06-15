@@ -8,7 +8,7 @@ DB CRUD 기능을 곁들인 캘린더 앱입니다.
 <details>
     <summary> iOS 15.5 </summary>
 
-    날짜 선택 및 이동
+    날짜 선택 및 이동 기능
 
 ![Jun-15-2022 13-09-07](https://user-images.githubusercontent.com/85836879/173736386-6dfab343-adb2-44ea-b24b-264faa232dce.gif)
 
@@ -32,6 +32,27 @@ DB CRUD 기능을 곁들인 캘린더 앱입니다.
 
 <details>
     <summary> Andriod API 33 </summary>
+
+    날짜 선택 및 이동 기능
+
+![select_date](https://user-images.githubusercontent.com/85836879/173739957-bd0437ec-87fd-4b85-801f-52365c75f980.gif)
+
+    일정 생성 기능
+
+![just_insert](https://user-images.githubusercontent.com/85836879/173739954-4bc01ab2-a574-4341-8ae8-b2e36d32060d.gif)
+
+    유효성 검사 후 일정 생성 기능
+
+![validation_insert](https://user-images.githubusercontent.com/85836879/173739966-8a91a670-c7ab-4739-af2a-7c6dfa27ddf4.gif)
+
+    일정 조회 및 업데이트 기능
+
+![update](https://user-images.githubusercontent.com/85836879/173739963-d23cce1d-406b-440d-9458-e6b3af02746e.gif)
+
+    일정 삭제 기능 
+
+![delete_schedule](https://user-images.githubusercontent.com/85836879/173739948-49bffaf6-64fc-4cd1-ac7d-8229300d4d9d.gif)
+    
 </details>
 
 ### 💡 Tips
@@ -57,3 +78,8 @@ DateTime과 DateTime.utc가 전혀 다르다는 사실을 알게되어 이후에
 
 GetIt으로 SQLite의 상태값을 다루어 위젯별로 인자를 적게 주고받아서 코드짜는게 수월했다.
 
+Key 객체를 이용해서 delete 쿼리에 필요한 유니크 키를 제공하였다!
+
+Intl 패키지를 이용해 앱이 켜지며 초기화될 때 한국 언어를 사용했다.
+GetX의 Locale 객체도 있지만 Intl이 더 가벼운 장점이 있어 차후에 다국어 기능만 구현이 필요한 경우
+또 써야겠다.
