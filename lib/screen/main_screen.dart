@@ -107,7 +107,7 @@ class _ScheduleList extends StatelessWidget {
                 // 2022-06-14 00:00:00.000Z <- Z는 UTC 기준으로 0시를 말한다.
                 // Z가 안붙어있으면 현지시간을 말한다 ( +- 9시간 )
 
-                print(snapshot.data);
+                // print(snapshot.data);
 
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());

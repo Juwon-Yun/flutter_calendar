@@ -171,7 +171,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       if (!mounted) return;
       Navigator.of(context).pop();
     } else {
-      print('에러가 있습니다.');
+      // print('에러가 있습니다.');
     }
   }
 
