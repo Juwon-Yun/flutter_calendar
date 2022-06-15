@@ -4,7 +4,10 @@
 DB CRUD 기능을 곁들인 캘린더 앱입니다.
 
 ### 🚀 How
-#### iOS 15.5
+
+<details>
+    <summary> iOS 15.5 </summary>
+
     날짜 선택 및 이동
 
 ![Jun-15-2022 13-09-07](https://user-images.githubusercontent.com/85836879/173736386-6dfab343-adb2-44ea-b24b-264faa232dce.gif)
@@ -25,7 +28,11 @@ DB CRUD 기능을 곁들인 캘린더 앱입니다.
 
 ![calandar_delete](https://user-images.githubusercontent.com/85836879/173736504-4219e79d-7805-4bd5-beb1-15e4347dc1e6.gif)
 
+</details>
 
+<details>
+    <summary> Andriod API 33 </summary>
+</details>
 
 ### 💡 Tips
 Form 위젯에 속한 TextFormField의 validator 속성을 컨트롤해 서로 다른 유효성 검사를 할 수 있습니다.
